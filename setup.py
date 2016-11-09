@@ -1,19 +1,29 @@
+#!/usr/bin/env python
 # Copyright (c) Aaron Gallagher <_@habnab.it>
 # See COPYING for details.
 
 from setuptools import setup
 
 
-with open('README.rst', 'rb') as infile:
-    long_description = infile.read()
+def get_requirements():
+    """returns a list of all requirements"""
+    requirements = []
+    with open('requirements.txt', 'rb') as infile:
+        for line in (l.decode('utf8').strip() for l in infile):
+            if line and not line.startswith('#'):
+                requirements.append(line)
 
-with open('requirements.txt', 'rb') as infile:
-    install_requires = infile.read().split()
+    return requirements
+
+
+with open('README.rst', 'rb') as infile:
+    LONG_DESCRIPTION = infile.read().decode('utf8')
+
 
 setup(
     name='txsocksx',
     description='Twisted client endpoints for SOCKS{4,4a,5}',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     author='Aaron Gallagher',
     author_email='_@habnab.it',
     url='https://github.com/habnabit/txsocksx',
@@ -34,6 +44,6 @@ setup(
     vcversioner={
         'version_module_paths': ['txsocksx/_version.py'],
     },
-    install_requires=install_requires,
+    install_requires=get_requirements(),
     packages=['txsocksx', 'txsocksx.test'],
 )
