@@ -2,23 +2,15 @@
 # Copyright (c) Aaron Gallagher <_@habnab.it>
 # See COPYING for details.
 
+import io
 from setuptools import setup
 
 
-def get_requirements():
-    """returns a list of all requirements"""
-    requirements = []
-    with open('requirements.txt', 'rb') as infile:
-        for line in (l.decode('utf8').strip() for l in infile):
-            if line and not line.startswith('#'):
-                requirements.append(line)
+with io.open('README.rst', mode='r', encoding='utf8') as infile:
+    LONG_DESCRIPTION = infile.read()
 
-    return requirements
-
-
-with open('README.rst', 'rb') as infile:
-    LONG_DESCRIPTION = infile.read().decode('utf8')
-
+with io.open('requirements.txt', mode='r', encoding='utf8') as infile:
+    INSTALL_REQUIRES = infile.read().split()
 
 setup(
     name='txsocksx',
@@ -44,6 +36,6 @@ setup(
     vcversioner={
         'version_module_paths': ['txsocksx/_version.py'],
     },
-    install_requires=get_requirements(),
+    install_requires=INSTALL_REQUIRES,
     packages=['txsocksx', 'txsocksx.test'],
 )
